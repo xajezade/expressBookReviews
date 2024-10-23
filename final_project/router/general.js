@@ -21,36 +21,47 @@ public_users.post("/register", (req,res) => {
 
 // Get the book list available in the shop
 public_users.get('/',function (req, res) {
-  const msg = JSON.stringify({books}, null, 4);  
-  return res.status(300).send(msg);
+  let get_books =new Promise((resolve, reject)=>{
+    resolve(res.status(200).send(JSON.stringify({books}, null, 4)));
+  });
+  get_books.then(()=>console.log('The list of books is printed!'));
 });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   const ISBN = req.params.isbn;
   let book = JSON.stringify(books[ISBN], null,4);
-  return res.status(300).send(book);
+  let get_book_isbn = new Promise((resolve, reject)=>{
+    resolve(res.status(200).send(book));
+  })
+  get_book_isbn.then(()=>console.log(`the details of book with id ${ISBN} is retrieved`));
  });
   
 // Get book details based on author
 public_users.get('/author/:author',function (req, res) {
   const author = req.params.author;
   let book = Object.values(books).filter((item)=>item.author===author);
-  return res.status(300).send(JSON.stringify(book, null, 4));
+  let get_book_author = new Promise((resolve, reject)=>{
+    resolve(res.status(200).send(JSON.stringify(book, null, 4)))
+  });
+  get_book_author.then(()=>console.log(`the details of book written by ${author} is retrieved`));
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
     const title = req.params.title;
     let book = Object.values(books).filter((item)=>item.title===title);
-    return res.status(300).send(JSON.stringify(book, null, 4));
+    let get_book_title = new Promise((resolve, reject)=>{
+        resolve(res.status(200).send(JSON.stringify(book, null, 4)));
+    });
+    get_book_title.then(()=>console.log(`the details of book with title of ${title} is retrieved`));
 });
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
   const ISBN = req.params.isbn;
   let review = JSON.stringify(books[ISBN].reviews, null, 4);
-  return res.status(300).send(review);
+  return res.status(200).send(review);
 });
 
 module.exports.general = public_users;
